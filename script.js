@@ -29,7 +29,7 @@ function updateLatLng(){
     latlng.innerHTML = latParam + ', ' + lngParam;
     $.getJSON('https://54.148.56.3/?latitude='+latParam+'&longitude='+lngParam+'&placetype=neighbourhood', function(data){
       geojson = data;
-      $('#stuff').text(geojson.features[0].properties['wof:name']);
+      $('#place').text(geojson.features[0].properties['wof:name']);
     })
     //$('#stuff').text(geojson.features[0].properties['wof:name']);
 }
