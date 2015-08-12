@@ -27,9 +27,9 @@ function updateLatLng(){
     var latParam = m.lat.toFixed(6);
     var lngParam = m.lng.toFixed(6);
     latlng.innerHTML = latParam + ', ' + lngParam;
-    $.getJSON('https://54.148.56.3/?latitude='+latParam+'&longitude='+lngParam, function(data){
+    $.getJSON('https://54.148.56.3/?latitude='+latParam+'&longitude='+lngParam+'&placetype=neighbourhood', function(data){
       geojson = data;
-      $('#stuff').text(geojson.features[4].properties['wof:name']);
+      $('#stuff').text(geojson.features[0].properties['wof:name']);
     })
     //$('#stuff').text(geojson.features[0].properties['wof:name']);
 }
