@@ -9,8 +9,12 @@ var marker = L.marker([51.505, -0.09], {
 updateLatLng();
 
 map.on('move', recenter);
+
+//recenter();
 function recenter(){
   marker.setLatLng(map.getCenter());
+  updateLatLng();
+  $('#place').css('color', '#939393');
 }
 
 map.on('dragend', updateLatLng);
