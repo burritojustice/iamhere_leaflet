@@ -5,26 +5,18 @@ var hash = new L.Hash(map);
 var marker = L.marker([51.505, -0.09], {
     draggable: false
 }).addTo(map);
+var lat;
+var lng;
 map.on('dragend', updateLatLng);
-map.on('dragstart', function gray(){
-  $('#neighborhood').css('color', '#939393');
-  $('#region').css('color', '#939393');
-  $('#locality').css('color', '#939393');
-})
+map.on('dragstart', grayText)
 updateLatLng();
 map.on('move', recenter);
 
-//recenter();
 function recenter(){
   marker.setLatLng(map.getCenter());
   updateLatLng();
-  $('#neighborhood').css('color', '#939393');
-  $('#region').css('color', '#939393');
-  $('#locality').css('color', '#939393');
+  grayText();
 }
-
-var lat;
-var lng;
 
 function updateLatLng(){
     var m = marker.getLatLng();
@@ -32,63 +24,36 @@ function updateLatLng(){
     lat = m.lat.toFixed(6);
     lng = m.lng.toFixed(6);
     $('#latlng').text(lat + ', ' + lng);
-    findNeighborhood();
-    findLocality();
-    findRegion();
+    findPlace('neighbourhood', '#neighborhood');
+    findPlace('region', '#region');
+    findPlace('locality', '#locality');
 }
 
-function findNeighborhood(){
-  var neighborhood;
-  $.getJSON('https://54.148.56.3/?latitude='+lat+'&longitude='+lng+'&placetype=neighbourhood', function(data){
+function findPlace(placeType, elementID){
+  var place;
+  $.getJSON('https://54.148.56.3/?latitude='+lat+'&longitude='+lng+'&placetype='+placeType, function(data){
     var geojson = data;
-
     if (geojson.features.length==1){
-      neighborhood = geojson.features[0].properties['wof:name'];
+      place = geojson.features[0].properties['wof:name'];
     }
     else{
-      neighborhood = [];
+      place = [];
       for(var i = 0; i < geojson.features.length; i++){
-        neighborhood.push(geojson.features[i].properties['wof:name']);
+        place.push(geojson.features[i].properties['wof:name']);
       }
     }
-    $('#neighborhood').text(neighborhood);
-    $('#neighborhood').css('color', 'white');
+    $(elementID).text(place);
+    $(elementID).css('color', 'white');
   })
 }
 
-function findLocality(){
-  var locality;
-  $.getJSON('https://54.148.56.3/?latitude='+lat+'&longitude='+lng+'&placetype=locality', function(data){
-    var geojson = data;
-    locality = geojson.features[0].properties['wof:name'];
-    $('#locality').text(locality);
-    $('#locality').css('color', 'white');
-  })
-}
-
-var geojson;
-function findRegion(){
-  var locality;
-  $.getJSON('https://54.148.56.3/?latitude='+lat+'&longitude='+lng+'&placetype=region', function(data){
-    geojson = data;
-    region = geojson.features[0].properties['wof:name'];
-    $('#region').text(region);
-    $('#region').css('color', 'white');
-  })
+function grayText(elementID){
+  $('#neighborhood').css('color', '#939393');
+  $('#region').css('color', '#939393');
+  $('#locality').css('color', '#939393');
 }
 
 document.getElementById('locate').addEventListener('click', function test(){
     map.locate({setView: true, maxZoom: 17});
     map.on('locationfound',updateLatLng);
 });
-
-/*document.getElementById('locality').addEventListener('click', function(){
-  var locality;
-  $.getJSON('https://54.148.56.3/?latitude='+lat+'&longitude='+lng+'&placetype=locality', function(data){
-    var geojson = data;
-    locality = geojson.features[0].properties['wof:name'];
-    $('#display').text(locality);
-    $('#display').show();
-  })
-});
-*/
