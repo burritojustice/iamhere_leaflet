@@ -24,6 +24,7 @@ var lng;
 
 function updateLatLng(){
     var m = marker.getLatLng();
+    m = m.wrap();
     lat = m.lat.toFixed(6);
     lng = m.lng.toFixed(6);
     $('#latlng').text(lat + ', ' + lng);
