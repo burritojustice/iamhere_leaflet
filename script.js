@@ -1,7 +1,7 @@
 var map = L.map('map').setView([51.505, -0.09], 17);
 var layer = Tangram.leafletLayer({ scene: 'https://raw.githubusercontent.com/tangrams/simple-demo/gh-pages/scene.yaml' });
 layer.addTo(map);
-
+var hash = new L.Hash(map);
 var latlng = document.getElementById('latlng');
 // $('#latlng')
 
