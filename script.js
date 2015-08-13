@@ -27,11 +27,13 @@ function updateLatLng(){
     findPlace('region', '#region');
     findPlace('locality', '#locality');
 }
-
+var geojson;
+var placeID;
 function findPlace(placeType, elementID){
   var place;
+  //placeID;
   $.getJSON('https://54.148.56.3/?latitude='+lat+'&longitude='+lng+'&placetype='+placeType, function(data){
-    var geojson = data;
+    geojson = data;
     if (geojson.features.length==1){
       place = geojson.features[0].properties['wof:name'];
     }
@@ -41,10 +43,15 @@ function findPlace(placeType, elementID){
         place.push(geojson.features[i].properties['wof:name']);
       }
     }
+    placeID = geojson.features[0].id;
+    var gazeteerLink = 'https://52.27.138.134/id/'+placeID;
     $(elementID).text(place);
     $(elementID).css('color', 'white');
+    $(elementID).wrap('<a href='+gazeteerLink+'/>')
   })
 }
+
+
 
 function grayText(elementID){
   $('#neighborhood').css('color', '#939393');
