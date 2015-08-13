@@ -14,7 +14,6 @@ map.on('move', recenter);
 
 function recenter(){
   marker.setLatLng(map.getCenter());
-  updateLatLng();
   grayText();
 }
 
