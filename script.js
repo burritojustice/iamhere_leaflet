@@ -20,10 +20,8 @@ function recenter(){
 
 map.on('dragend', updateLatLng);
 map.on('dragstart', function gray(){
-  $('#place').css('color', 'gray');
+  $('#place').css('color', '#939393');
 })
-
-
 
 var geojson;
 var neighborhood;
@@ -34,26 +32,27 @@ function updateLatLng(){
     var latParam = m.lat.toFixed(6);
     var lngParam = m.lng.toFixed(6);
     latlng.innerHTML = latParam + ', ' + lngParam;
-
-    $.getJSON('https://54.148.56.3/?latitude='+latParam+'&longitude='+lngParam+'&placetype=neighbourhood', function(data){
-      geojson = data;
-
-
-      if (geojson.features.length==1){
-        neighborhood = geojson.features[0].properties['wof:name'];
-      }
-      else{
-        neighborhood = [];
-        for(var i = 0; i < geojson.features.length; i++){
-          neighborhood.push(geojson.features[i].properties['wof:name']);
-        }
-      }
-
-      $('#place').text(neighborhood);
-      $('#place').css('color', 'white');
-    })
-    //$('#stuff').text(geojson.features[0].properties['wof:name']);
+    findNeighborhood(latParam, lngParam);
 }
+
+function findNeighborhood(lat, lng){
+  $.getJSON('https://54.148.56.3/?latitude='+lat+'&longitude='+lng+'&placetype=neighbourhood', function(data){
+    geojson = data;
+
+    if (geojson.features.length==1){
+      neighborhood = geojson.features[0].properties['wof:name'];
+    }
+    else{
+      neighborhood = [];
+      for(var i = 0; i < geojson.features.length; i++){
+        neighborhood.push(geojson.features[i].properties['wof:name']);
+      }
+    }
+    $('#place').text(neighborhood);
+    $('#place').css('color', 'white');
+  })
+}
+
 
 document.getElementById('locate').addEventListener('click', function test(){
     map.locate({setView: true, maxZoom: 17});
