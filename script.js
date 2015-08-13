@@ -37,7 +37,18 @@ function updateLatLng(){
 
     $.getJSON('https://54.148.56.3/?latitude='+latParam+'&longitude='+lngParam+'&placetype=neighbourhood', function(data){
       geojson = data;
-      neighborhood = geojson.features[0].properties['wof:name'];
+
+
+      if (geojson.features.length==1){
+        neighborhood = geojson.features[0].properties['wof:name'];
+      }
+      else{
+        neighborhood = [];
+        for(var i = 0; i < geojson.features.length; i++){
+          neighborhood.push(geojson.features[i].properties['wof:name']);
+        }
+      }
+
       $('#place').text(neighborhood);
       $('#place').css('color', 'white');
     })
