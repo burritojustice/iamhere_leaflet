@@ -1,17 +1,12 @@
 var map = L.map('map').setView([51.505, -0.09], 17);
-var layer = Tangram.leafletLayer({ scene: 'https://raw.githubusercontent.com/tangrams/simple-demo/gh-pages/scene.yaml' });
+var layer = Tangram.leafletLayer({ scene: 'scene.yaml' });
 layer.addTo(map);
 var hash = new L.Hash(map);
-var latlng = document.getElementById('latlng');
-// $('#latlng')
-
 var marker = L.marker([51.505, -0.09], {
     draggable: false
 }).addTo(map);
 
-//map.locate({setView: true, maxZoom: 16});
-
-//updateLatLng();
+updateLatLng();
 
 map.on('move', recenter);
 function recenter(){
@@ -21,23 +16,24 @@ function recenter(){
 map.on('dragend', updateLatLng);
 map.on('dragstart', function gray(){
   $('#place').css('color', '#939393');
+  $('#display').hide();
 })
 
-var geojson;
-var neighborhood;
-var locality;
+var lat;
+var lng;
 
 function updateLatLng(){
     var m = marker.getLatLng();
-    var latParam = m.lat.toFixed(6);
-    var lngParam = m.lng.toFixed(6);
-    latlng.innerHTML = latParam + ', ' + lngParam;
-    findNeighborhood(latParam, lngParam);
+    lat = m.lat.toFixed(6);
+    lng = m.lng.toFixed(6);
+    $('#latlng').text(lat + ', ' + lng);
+    findNeighborhood();
 }
 
-function findNeighborhood(lat, lng){
+function findNeighborhood(){
+  var neighborhood;
   $.getJSON('https://54.148.56.3/?latitude='+lat+'&longitude='+lng+'&placetype=neighbourhood', function(data){
-    geojson = data;
+    var geojson = data;
 
     if (geojson.features.length==1){
       neighborhood = geojson.features[0].properties['wof:name'];
@@ -53,8 +49,17 @@ function findNeighborhood(lat, lng){
   })
 }
 
-
 document.getElementById('locate').addEventListener('click', function test(){
     map.locate({setView: true, maxZoom: 17});
     map.on('locationfound',updateLatLng);
+});
+
+document.getElementById('locality').addEventListener('click', function(){
+  var locality;
+  $.getJSON('https://54.148.56.3/?latitude='+lat+'&longitude='+lng+'&placetype=locality', function(data){
+    var geojson = data;
+    locality = geojson.features[0].properties['wof:name'];
+    $('#display').text(locality);
+    $('#display').show();
+  })
 });
