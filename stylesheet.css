@@ -7,7 +7,7 @@ div.ui-coordinates {
   padding:5px 10px;
   background:rgba(0,0,0,0.5);
   color:#fff;
-  font-size:11px;
+  font-size:64px;
   line-height:64px;
   border-radius:3px;
   display: block;
@@ -17,6 +17,19 @@ div.ui-coordinates {
   text-align: center;
 
   }
+
+
+
+div.place {
+  font-size: 64px;
+  background:rgba(0,0,0,0.5);
+  color:#fff;
+  font-size:64px;
+  line-height:64px;
+  width:50%;
+  float: left;
+  text-align: center;
+}
 
 #latlng{
   font-size: 64px;
