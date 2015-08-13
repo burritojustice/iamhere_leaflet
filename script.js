@@ -19,17 +19,27 @@ function recenter(){
 }
 
 map.on('dragend', updateLatLng);
+map.on('dragstart', function gray(){
+  $('#place').css('color', 'gray');
+})
+
+
 
 var geojson;
+var neighborhood;
+var locality;
 
 function updateLatLng(){
     var m = marker.getLatLng();
     var latParam = m.lat.toFixed(6);
     var lngParam = m.lng.toFixed(6);
     latlng.innerHTML = latParam + ', ' + lngParam;
+
     $.getJSON('https://54.148.56.3/?latitude='+latParam+'&longitude='+lngParam+'&placetype=neighbourhood', function(data){
       geojson = data;
-      $('#place').text(geojson.features[0].properties['wof:name']);
+      neighborhood = geojson.features[0].properties['wof:name'];
+      $('#place').text(neighborhood);
+      $('#place').css('color', 'white');
     })
     //$('#stuff').text(geojson.features[0].properties['wof:name']);
 }
