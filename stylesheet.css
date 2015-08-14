@@ -15,6 +15,7 @@ div.ui-coordinates {
   margin-left: auto;
   margin-right: auto;
   text-align: center;
+  text-decoration: none;
 
   }
 
@@ -29,7 +30,10 @@ div.place {
   width:50%;
   float: left;
   text-align: center;
+
 }
+
+
 
 #latlng{
   font-size: 64px;
@@ -42,4 +46,9 @@ div.place {
 #locate{
   position: absolute;
   top: 155px;
+  z-index: 100;
+}
+
+a{
+  text-deocration: none;
 }

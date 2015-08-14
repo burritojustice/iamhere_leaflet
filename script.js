@@ -9,7 +9,7 @@ var lat;
 var lng;
 map.on('dragend', updateLatLng);
 map.on('dragstart', grayText)
-updateLatLng();
+//updateLatLng();
 map.on('move', recenter);
 
 function recenter(){
@@ -38,16 +38,18 @@ function findPlace(placeType, elementID){
       place = geojson.features[0].properties['wof:name'];
     }
     else{
-      place = [];
+      var placearray = [];
       for(var i = 0; i < geojson.features.length; i++){
-        place.push(geojson.features[i].properties['wof:name']);
+        placearray.push(geojson.features[i].properties['wof:name']);
+        place = " " + placearray[0] + " or " + placearray[1];
       }
     }
+
     placeID = geojson.features[0].id;
-    var gazeteerLink = 'https://52.27.138.134/id/'+placeID+'target=_"blank"';
+    var gazeteerLink = 'https://52.27.138.134/id/'+placeID;
 
     var wofPath = geojson.features[0].properties['wof:path'];
-    drawPolygon(wofPath);
+    //drawPolygon(wofPath);
     $(elementID).text(place);
     $(elementID).css('color', 'white');
     $(elementID).wrap('<a href=' + gazeteerLink +'/>');
@@ -60,14 +62,16 @@ function grayText(elementID){
   $('#locality').css('color', '#939393');
 }
 
+/*
 var polygon;
 function drawPolygon(wofPath){
   $.getJSON('https://52.27.138.134/data/'+wofPath, function(data){
     polygon = data;
-    //L.geoJson(polygon).addTo(map);
+    L.geoJson(polygon).addTo(map);
   });
 
 }
+*/
 
 document.getElementById('locate').addEventListener('click', function test(){
     map.locate({setView: true, maxZoom: 15});
