@@ -18,6 +18,9 @@ function recenter(){
   grayText();
 }
 
+
+map.on('move', updateLatLng)
+
 function updateLatLng(){
     var m = marker.getLatLng();
     m = m.wrap();
