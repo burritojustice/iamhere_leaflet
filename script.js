@@ -19,13 +19,14 @@ function recenter(){
 }
 
 
-map.on('move', updateLatLng)
+map.on('dragend', updateLatLng)
 
 function updateLatLng(){
-    var m = marker.getLatLng();
+    var m = map.getCenter();
     m = m.wrap();
     lat = m.lat.toFixed(6);
     lng = m.lng.toFixed(6);
+    console.log('geolocating ' + lat + ' ,' + lng);
     $('#latlng').text(lat + ', ' + lng);
     findPlace('neighbourhood', '#neighborhood');
     findPlace('region', '#region');
