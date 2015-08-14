@@ -11,7 +11,7 @@ map.on('dragend', updateLatLng);
 map.on('dragstart', grayText)
 //updateLatLng();
 map.on('move', recenter);
-setTimeout(updateLatLng, 2000)
+setTimeout(updateLatLng, 2000);
 
 function recenter(){
   marker.setLatLng(map.getCenter());
