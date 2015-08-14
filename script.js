@@ -1,4 +1,4 @@
-var map = L.map('map').setView([51.505, -0.09], 17);
+var map = L.map('map').setView([51.505, -0.09], 15);
 var layer = Tangram.leafletLayer({ scene: 'scene.yaml' });
 layer.addTo(map);
 var hash = new L.Hash(map);
@@ -44,14 +44,15 @@ function findPlace(placeType, elementID){
       }
     }
     placeID = geojson.features[0].id;
-    var gazeteerLink = 'https://52.27.138.134/id/'+placeID;
+    var gazeteerLink = 'https://52.27.138.134/id/'+placeID+'target=_"blank"';
+
+    var wofPath = geojson.features[0].properties['wof:path'];
+    drawPolygon(wofPath);
     $(elementID).text(place);
     $(elementID).css('color', 'white');
-    $(elementID).wrap('<a href='+gazeteerLink+'/>')
+    $(elementID).wrap('<a href=' + gazeteerLink +'/>');
   })
 }
-
-
 
 function grayText(elementID){
   $('#neighborhood').css('color', '#939393');
@@ -59,7 +60,16 @@ function grayText(elementID){
   $('#locality').css('color', '#939393');
 }
 
+var polygon;
+function drawPolygon(wofPath){
+  $.getJSON('https://52.27.138.134/data/'+wofPath, function(data){
+    polygon = data;
+    //L.geoJson(polygon).addTo(map);
+  });
+
+}
+
 document.getElementById('locate').addEventListener('click', function test(){
-    map.locate({setView: true, maxZoom: 17});
+    map.locate({setView: true, maxZoom: 15});
     map.on('locationfound',updateLatLng);
 });

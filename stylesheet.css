@@ -38,3 +38,8 @@ div.place {
 #place{
   font-size: 64px;
 }
+
+#locate{
+  position: absolute;
+  top: 155px;
+}
