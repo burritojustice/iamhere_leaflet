@@ -11,6 +11,7 @@ map.on('dragend', updateLatLng);
 map.on('dragstart', grayText)
 //updateLatLng();
 map.on('move', recenter);
+setTimeout(updateLatLng, 2000)
 
 function recenter(){
   marker.setLatLng(map.getCenter());
@@ -38,10 +39,10 @@ function findPlace(placeType, elementID){
       place = geojson.features[0].properties['wof:name'];
     }
     else{
-      var placearray = [];
+      var placeArray = [];
       for(var i = 0; i < geojson.features.length; i++){
-        placearray.push(geojson.features[i].properties['wof:name']);
-        place = " " + placearray[0] + " or " + placearray[1];
+        placeArray.push(geojson.features[i].properties['wof:name']);
+        place = " " + placeArray[0] + " or " + placeArray[1];
       }
     }
 
